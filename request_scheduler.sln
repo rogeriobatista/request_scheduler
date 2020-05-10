@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "request_scheduler", "request_scheduler\request_scheduler.csproj", "{8FC2CD4D-20A7-42D5-9368-2ACC3363CBC5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8FC2CD4D-20A7-42D5-9368-2ACC3363CBC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FC2CD4D-20A7-42D5-9368-2ACC3363CBC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FC2CD4D-20A7-42D5-9368-2ACC3363CBC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FC2CD4D-20A7-42D5-9368-2ACC3363CBC5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
