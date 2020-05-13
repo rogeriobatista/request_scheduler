@@ -12,8 +12,6 @@ namespace request_scheduler.Domain.MauticForms.Interfaces
 
         void Save(MauticFormRequestDto dto);
 
-        void Update(MauticFormRequestDto dto);
-
         void Delete(long id);
 
         void Execute();

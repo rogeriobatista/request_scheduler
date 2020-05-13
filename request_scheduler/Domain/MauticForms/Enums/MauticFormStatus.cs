@@ -5,6 +5,7 @@ namespace request_scheduler.Domain.MauticForms.Enums
     {
         Pending=1,
         Sent=2,
-        Failed=3
+        Failed=3,
+        InProcess=4
     }
 }

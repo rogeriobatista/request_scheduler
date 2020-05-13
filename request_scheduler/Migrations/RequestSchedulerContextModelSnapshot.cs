@@ -29,11 +29,19 @@ namespace request_scheduler.Migrations
                     b.Property<string>("Body")
                         .HasColumnType("text");
 
+                    b.Property<string>("ContentType")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("DestinyAddress")
                         .HasColumnType("text");
+
+                    b.Property<int>("HttpMethod")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(2);
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");

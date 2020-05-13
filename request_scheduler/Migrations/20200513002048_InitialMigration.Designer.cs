@@ -10,8 +10,8 @@ using request_scheduler.Data.Context;
 namespace request_scheduler.Migrations
 {
     [DbContext(typeof(RequestSchedulerContext))]
-    [Migration("20200510003206_initial")]
-    partial class initial
+    [Migration("20200513002048_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace request_scheduler.Migrations
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("request_scheduler.Domain.Models.MauticForm", b =>
+            modelBuilder.Entity("request_scheduler.Domain.MauticForms.Models.MauticForm", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,11 +31,25 @@ namespace request_scheduler.Migrations
                     b.Property<string>("Body")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<string>("ContentType")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("DestinyAddress")
+                        .HasColumnType("text");
+
+                    b.Property<int>("HttpMethod")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(2);
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 

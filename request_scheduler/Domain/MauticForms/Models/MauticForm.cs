@@ -1,5 +1,6 @@
 using System;
 using request_scheduler.Domain.MauticForms.Enums;
+using request_scheduler.Generics.Http.Enums;
 
 namespace request_scheduler.Domain.MauticForms.Models
 {
@@ -13,17 +14,23 @@ namespace request_scheduler.Domain.MauticForms.Models
 
         public string DestinyAddress { get; private set; }
 
+        public HttpMethod HttpMethod { get; private set; }
+
+        public string ContentType { get; private set; }
+
         public string Body { get; private set; }
 
         public MauticFormStatus Status { get; private set; }
 
         protected MauticForm() { }
 
-        public MauticForm(string destinyAddress, string body)
+        public MauticForm(string destinyAddress, HttpMethod httpMethod, string contentType, string body)
         {
             CreatedAt = DateTime.Now;
             Status = MauticFormStatus.Pending;
             DestinyAddress = destinyAddress;
+            HttpMethod = httpMethod;
+            ContentType = contentType;
             Body = body;
         }
 
@@ -35,6 +42,16 @@ namespace request_scheduler.Domain.MauticForms.Models
         public void UpdateDestinyAddress(string destinyAddress)
         {
             DestinyAddress = destinyAddress;
+        }
+
+        public void UpdateHttpMethod(HttpMethod httpMethod)
+        {
+            HttpMethod = httpMethod;
+        }
+
+        public void UpdateContentType(string contentType)
+        {
+            ContentType = contentType;
         }
 
         public void UpdateBody(string body)

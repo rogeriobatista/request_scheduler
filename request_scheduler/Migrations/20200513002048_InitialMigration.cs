@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace request_scheduler.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,11 @@ namespace request_scheduler.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Date = table.Column<DateTime>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: true),
+                    DestinyAddress = table.Column<string>(nullable: true),
+                    HttpMethod = table.Column<int>(nullable: false, defaultValue: 2),
+                    ContentType = table.Column<string>(nullable: true),
                     Body = table.Column<string>(nullable: true),
                     Status = table.Column<int>(nullable: false)
                 },

@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using request_scheduler.Domain.MauticForms.Dtos;
+﻿using System.Collections.Generic;
+using request_scheduler.Domain.MauticForms.Models;
 
 namespace request_scheduler.Domain.MauticForms.Interfaces
 {
     public interface IMauticFormRepository
     {
-        IList<MauticFormDto> GetAllPending();
+        IList<MauticForm> GetAllPending();
 
-        IList<MauticFormDto> Get();
+        IList<MauticForm> Get();
 
-        MauticFormDto GetById(long id);
+        MauticForm GetById(long id);
 
-        void Save(MauticFormRequestDto dto);
+        void Save(MauticForm model);
 
-        void Update(MauticFormRequestDto dto);
+        void Update(MauticForm model);
 
-        void Delete(long id);
+        void Delete(MauticForm mauticForm);
     }
 }

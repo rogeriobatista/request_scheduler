@@ -34,12 +34,6 @@ namespace request_scheduler.Controllers
             _mauticFormService.Save(dto);
         }
 
-        [HttpPut]
-        public void Update([FromBody] MauticFormRequestDto dto)
-        {
-            _mauticFormService.Update(dto);
-        }
-
         [HttpDelete]
         public void Delete(long id)
         {

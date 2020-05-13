@@ -1,6 +1,7 @@
 ﻿using System;
 using request_scheduler.Domain.MauticForms.Enums;
 using request_scheduler.Domain.MauticForms.Models;
+using request_scheduler.Generics.Http.Enums;
 
 namespace request_scheduler.Domain.MauticForms.Dtos
 {
@@ -14,6 +15,10 @@ namespace request_scheduler.Domain.MauticForms.Dtos
 
         public string DestinyAddress { get; set; }
 
+        public HttpMethod HttpMethod { get; set; }
+
+        public string ContentType { get; set; }
+
         public string Body { get; set; }
 
         public MauticFormStatus Status { get; set; }
@@ -24,6 +29,8 @@ namespace request_scheduler.Domain.MauticForms.Dtos
             CreatedAt = model.CreatedAt;
             UpdatedAt = model.UpdatedAt;
             DestinyAddress = model.DestinyAddress;
+            HttpMethod = model.HttpMethod;
+            ContentType = model.ContentType;
             Body = model.Body;
             Status = model.Status;
         }

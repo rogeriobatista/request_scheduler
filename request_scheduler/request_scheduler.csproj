@@ -32,5 +32,9 @@
     <Folder Include="Domain\MauticForms\Services\" />
     <Folder Include="Domain\MauticForms\Interfaces\" />
     <Folder Include="Domain\MauticForms\Dtos\" />
+    <Folder Include="Generics\" />
+    <Folder Include="Generics\Http\" />
+    <Folder Include="Generics\Http\Enums\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 </Project>
