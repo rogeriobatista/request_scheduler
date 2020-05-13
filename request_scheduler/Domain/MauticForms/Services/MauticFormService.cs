@@ -58,6 +58,7 @@ namespace request_scheduler.Domain.MauticForms.Services
             mauticForm.UpdateHttpMethod(dto.HttpMethod);
             mauticForm.UpdateContentType(dto.ContentType);
             mauticForm.UpdateBody(dto.Body);
+            mauticForm.UpdateStatus(dto.Status.Value);
             mauticForm.SetUpdatedAt();
 
             return mauticForm;
