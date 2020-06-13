@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using request_scheduler.Domain.MauticForms.Enums;
 using request_scheduler.Domain.MauticForms.Models;
 using request_scheduler.Generics.Http.Enums;
@@ -19,9 +21,13 @@ namespace request_scheduler.Domain.MauticForms.Dtos
 
         public string ContentType { get; set; }
 
+        public List<MauticFormHeaderDto> Headers { get; set; }
+
         public string Body { get; set; }
 
         public MauticFormStatus Status { get; set; }
+
+        public MauticFormSendFrequency SendFrequency { get; set; }
 
         public MauticFormDto(MauticForm model)
         {
@@ -31,8 +37,10 @@ namespace request_scheduler.Domain.MauticForms.Dtos
             DestinyAddress = model.DestinyAddress;
             HttpMethod = model.HttpMethod;
             ContentType = model.ContentType;
+            Headers = JsonConvert.DeserializeObject<List<MauticFormHeaderDto>>(model.Headers);
             Body = model.Body;
             Status = model.Status;
+            SendFrequency = model.SendFrequency;
         }
     }
 }

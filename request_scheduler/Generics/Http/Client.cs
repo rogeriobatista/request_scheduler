@@ -1,5 +1,8 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
+using Newtonsoft.Json;
+using request_scheduler.Domain.MauticForms.Dtos;
 
 namespace request_scheduler.Generics.Http
 {
@@ -13,9 +16,14 @@ namespace request_scheduler.Generics.Http
 
         private readonly HttpClient HttpClient;
 
-        public Client(string url, string contentType, string body)
+        public Client(string url, string contentType, string headers, string body)
         {
             HttpClient = new HttpClient();
+            var httpHeaders = JsonConvert.DeserializeObject<List<MauticFormHeaderDto>>(headers);
+            foreach (var item in httpHeaders)
+            {
+                HttpClient.DefaultRequestHeaders.Add(item.Name, item.Value);
+            }
             Url = url;
             ContentType = contentType;
             Body = body;

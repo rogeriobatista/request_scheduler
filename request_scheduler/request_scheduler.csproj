@@ -11,15 +11,16 @@
     <PackageReference Include="Hangfire.PostgreSql" Version="1.6.4.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.4">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="RabbitMQ.Client" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Domain\" />
@@ -36,5 +37,8 @@
     <Folder Include="Generics\Http\" />
     <Folder Include="Generics\Http\Enums\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Queues\" />
+    <Folder Include="Queues\Producers\" />
+    <Folder Include="Queues\Consumers\" />
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@ using request_scheduler.Data.Context;
 using request_scheduler.Domain.MauticForms.Interfaces;
 using request_scheduler.Domain.MauticForms.Models;
 using request_scheduler.Domain.MauticForms.Enums;
+using System.Threading.Tasks;
 
 namespace request_scheduler.Data.Repositories
 {
@@ -28,9 +29,9 @@ namespace request_scheduler.Data.Repositories
             return _context.MauticFormRequests.ToList();
         }
 
-        public IList<MauticForm> GetAllPending()
+        public IList<MauticForm> GetAllPending(MauticFormSendFrequency sendFrequency, int packageSize)
         {
-            return _context.MauticFormRequests.Where(x => x.Status == MauticFormStatus.Pending).ToList();
+            return _context.MauticFormRequests.Where(x => x.Status == MauticFormStatus.Pending && x.SendFrequency == sendFrequency).Take(packageSize).ToList();
         }
 
         public MauticForm GetById(long id)
@@ -45,11 +46,11 @@ namespace request_scheduler.Data.Repositories
             _context.SaveChanges();
         }
 
-        public void Update(MauticForm mauticForm)
+        public async Task Update(MauticForm mauticForm)
         {
             _context.MauticFormRequests.Update(mauticForm);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -1,20 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using request_scheduler.Domain.MauticForms.Dtos;
 using request_scheduler.Domain.MauticForms.Enums;
 using request_scheduler.Domain.MauticForms.Interfaces;
 using request_scheduler.Domain.MauticForms.Models;
 using request_scheduler.Generics.Http;
 using request_scheduler.Generics.Http.Enums;
+using request_scheduler.Queues.Producers;
 
 namespace request_scheduler.Domain.MauticForms.Services
 {
     public class MauticFormService : IMauticFormService
     {
+        private readonly ISendMauticFormProducer _sendMauticFormProducer;
         private readonly IMauticFormRepository _mauticFormRepository;
 
-        public MauticFormService(IMauticFormRepository mauticFormRepository)
+        public MauticFormService(ISendMauticFormProducer sendMauticFormProducer, IMauticFormRepository mauticFormRepository)
         {
+            _sendMauticFormProducer = sendMauticFormProducer;
             _mauticFormRepository = mauticFormRepository;
         }
 
@@ -39,7 +44,8 @@ namespace request_scheduler.Domain.MauticForms.Services
         {
             if (dto.Id == 0)
             {
-                var formMautic = new MauticForm(dto.DestinyAddress, dto.HttpMethod, dto.ContentType, dto.Body);
+                string headers = JsonConvert.SerializeObject(dto.Headers);
+                var formMautic = new MauticForm(dto.DestinyAddress, dto.HttpMethod, dto.ContentType, headers, dto.Body, dto.SendFrequency);
                 _mauticFormRepository.Save(formMautic);
             }
             else
@@ -57,51 +63,58 @@ namespace request_scheduler.Domain.MauticForms.Services
             mauticForm.UpdateDestinyAddress(dto.DestinyAddress);
             mauticForm.UpdateHttpMethod(dto.HttpMethod);
             mauticForm.UpdateContentType(dto.ContentType);
+            string headers = JsonConvert.SerializeObject(dto.Headers);
+            mauticForm.UpdateHeaders(headers);
             mauticForm.UpdateBody(dto.Body);
             mauticForm.UpdateStatus(dto.Status.Value);
+            mauticForm.UpdateSendFrequency(dto.SendFrequency);
             mauticForm.SetUpdatedAt();
 
             return mauticForm;
         }
 
-        public void Execute()
+        public void Send(MauticForm mauticForm)
         {
-            var mauticFormPending = _mauticFormRepository.GetAllPending();
+            var client = new Client(mauticForm.DestinyAddress, mauticForm.ContentType, mauticForm.Headers, mauticForm.Body);
+            try
+            {
+                if (mauticForm.HttpMethod == HttpMethod.Post)
+                {
+                    client.Post();
+                }
+                else
+                {
+                    client.Get();
+                }
+            }
+            catch (Exception ex)
+            {
+                mauticForm.UpdateStatus(MauticFormStatus.Failed);
+                mauticForm.SetUpdatedAt();
+
+                _mauticFormRepository.Update(mauticForm);
+            }
+        }
+
+        public void Enqueue(MauticFormSendFrequency sendFrequency, int packageSize)
+        {
+            var mauticFormPending = _mauticFormRepository.GetAllPending(sendFrequency, packageSize);
 
             foreach (var mauticForm in mauticFormPending)
             {
+                _sendMauticFormProducer.BasicPublic(mauticForm);
                 StartProcessingMauticForm(mauticForm);
-
-                Send(mauticForm);
             }
         }
 
         private MauticForm StartProcessingMauticForm(MauticForm mauticForm)
         {
-            mauticForm.UpdateStatus(MauticFormStatus.InProcess);
-
-            _mauticFormRepository.Update(mauticForm);
-
-            return mauticForm;
-        }
-
-        private void Send(MauticForm mauticForm)
-        {
-            var client = new Client(mauticForm.DestinyAddress, mauticForm.ContentType, mauticForm.Body);
-
-            if (mauticForm.HttpMethod == HttpMethod.Post)
-            {
-                client.Post();
-            }
-            else
-            {
-                client.Get();
-            }
-
             mauticForm.UpdateStatus(MauticFormStatus.Sent);
             mauticForm.SetUpdatedAt();
 
             _mauticFormRepository.Update(mauticForm);
+
+            return mauticForm;
         }
     }
 }

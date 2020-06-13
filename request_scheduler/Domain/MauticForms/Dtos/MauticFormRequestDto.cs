@@ -1,4 +1,5 @@
-﻿using request_scheduler.Domain.MauticForms.Enums;
+﻿using System.Collections.Generic;
+using request_scheduler.Domain.MauticForms.Enums;
 using request_scheduler.Generics.Http.Enums;
 
 namespace request_scheduler.Domain.MauticForms.Dtos
@@ -13,8 +14,12 @@ namespace request_scheduler.Domain.MauticForms.Dtos
 
         public string ContentType { get; set; }
 
+        public List<MauticFormHeaderDto> Headers { get; set; }
+
         public string Body { get; set; }
 
         public MauticFormStatus? Status { get; set; }
+
+        public MauticFormSendFrequency SendFrequency { get; set; }
     }
 }

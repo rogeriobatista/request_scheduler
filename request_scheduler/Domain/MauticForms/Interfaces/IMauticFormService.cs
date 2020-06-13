@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using request_scheduler.Domain.MauticForms.Dtos;
+using request_scheduler.Domain.MauticForms.Enums;
+using request_scheduler.Domain.MauticForms.Models;
 
 namespace request_scheduler.Domain.MauticForms.Interfaces
 {
@@ -14,6 +16,8 @@ namespace request_scheduler.Domain.MauticForms.Interfaces
 
         void Delete(long id);
 
-        void Execute();
+        void Enqueue(MauticFormSendFrequency sendFrequency, int packageSize);
+
+        void Send(MauticForm mauticForm);
     }
 }

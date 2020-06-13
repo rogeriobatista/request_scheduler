@@ -18,20 +18,26 @@ namespace request_scheduler.Domain.MauticForms.Models
 
         public string ContentType { get; private set; }
 
+        public string Headers { get; private set; }
+
         public string Body { get; private set; }
 
         public MauticFormStatus Status { get; private set; }
 
+        public MauticFormSendFrequency SendFrequency { get; private set; }
+
         protected MauticForm() { }
 
-        public MauticForm(string destinyAddress, HttpMethod httpMethod, string contentType, string body)
+        public MauticForm(string destinyAddress, HttpMethod httpMethod, string contentType, string headers, string body, MauticFormSendFrequency sendFrequency)
         {
             CreatedAt = DateTime.Now;
             Status = MauticFormStatus.Pending;
             DestinyAddress = destinyAddress;
             HttpMethod = httpMethod;
             ContentType = contentType;
+            Headers = headers;
             Body = body;
+            SendFrequency = sendFrequency;
         }
 
         public void SetUpdatedAt()
@@ -54,6 +60,11 @@ namespace request_scheduler.Domain.MauticForms.Models
             ContentType = contentType;
         }
 
+        public void UpdateHeaders(string headers)
+        {
+            Headers = headers;
+        }
+
         public void UpdateBody(string body)
         {
             Body = body;
@@ -62,6 +73,11 @@ namespace request_scheduler.Domain.MauticForms.Models
         public void UpdateStatus(MauticFormStatus status)
         {
             Status = status;
+        }
+
+        public void UpdateSendFrequency(MauticFormSendFrequency sendFrequency)
+        {
+            SendFrequency = sendFrequency;
         }
     }
 }
