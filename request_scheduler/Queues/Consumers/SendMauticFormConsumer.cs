@@ -3,8 +3,8 @@ using System.Text;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using request_scheduler.Domain.MauticForms.Dtos;
 using request_scheduler.Domain.MauticForms.Interfaces;
-using request_scheduler.Domain.MauticForms.Models;
 
 namespace request_scheduler.Queues.Consumers
 {
@@ -25,25 +25,20 @@ namespace request_scheduler.Queues.Consumers
 
         }
 
-        public void Register()
+        public void RegisterToSave()
         {
-            channel.QueueDeclare(queue: "mautic-form", durable: false, exclusive: false, autoDelete: false, arguments: null);
+            channel.QueueDeclare(queue: "mautic-form-to-save", durable: false, exclusive: false, autoDelete: false, arguments: null);
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, ea) =>
             {
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body.ToArray());
-                var mauticForm = JsonConvert.DeserializeObject<MauticForm>(message);
-                _mauticFormService.Send(mauticForm);
+                var mauticForm = JsonConvert.DeserializeObject<MauticFormRequestDto>(message);
+                _mauticFormService.Save(mauticForm);
             };
-            channel.BasicConsume(queue: "mautic-form",
+            channel.BasicConsume(queue: "mautic-form-to-save",
                                  autoAck: true,
                                  consumer: consumer);
-        }
-
-        public void Deregister()
-        {
-            connection.Close();
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using request_scheduler.Domain.MauticForms.Dtos;
 using request_scheduler.Domain.MauticForms.Enums;
@@ -73,6 +74,22 @@ namespace request_scheduler.Domain.MauticForms.Services
             return mauticForm;
         }
 
+        public void Enqueue(MauticFormRequestDto dto)
+        {
+            _sendMauticFormProducer.PublishToSave(dto);
+        }
+
+        public async Task Enqueue(MauticFormSendFrequency sendFrequency, int packageSize)
+        {
+            var mauticFormPending = _mauticFormRepository.GetAllPending(sendFrequency, packageSize);
+
+            foreach (var mauticForm in mauticFormPending)
+            {
+                await StartProcessingMauticForm(mauticForm);
+                _sendMauticFormProducer.BasicPublish(mauticForm);
+            }
+        }
+
         public void Send(MauticForm mauticForm)
         {
             var client = new Client(mauticForm.DestinyAddress, mauticForm.ContentType, mauticForm.Headers, mauticForm.Body);
@@ -87,7 +104,7 @@ namespace request_scheduler.Domain.MauticForms.Services
                     client.Get();
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 mauticForm.UpdateStatus(MauticFormStatus.Failed);
                 mauticForm.SetUpdatedAt();
@@ -96,25 +113,12 @@ namespace request_scheduler.Domain.MauticForms.Services
             }
         }
 
-        public void Enqueue(MauticFormSendFrequency sendFrequency, int packageSize)
+        private async Task StartProcessingMauticForm(MauticForm mauticForm)
         {
-            var mauticFormPending = _mauticFormRepository.GetAllPending(sendFrequency, packageSize);
-
-            foreach (var mauticForm in mauticFormPending)
-            {
-                _sendMauticFormProducer.BasicPublic(mauticForm);
-                StartProcessingMauticForm(mauticForm);
-            }
-        }
-
-        private MauticForm StartProcessingMauticForm(MauticForm mauticForm)
-        {
-            mauticForm.UpdateStatus(MauticFormStatus.Sent);
+            mauticForm.UpdateStatus(MauticFormStatus.InProcess);
             mauticForm.SetUpdatedAt();
 
-            _mauticFormRepository.Update(mauticForm);
-
-            return mauticForm;
+            await _mauticFormRepository.Update(mauticForm);
         }
     }
 }

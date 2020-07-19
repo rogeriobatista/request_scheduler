@@ -31,7 +31,7 @@ namespace request_scheduler.Controllers
         [HttpPost]
         public void Save([FromBody] MauticFormRequestDto dto)
         {
-            _mauticFormService.Save(dto);
+            _mauticFormService.Enqueue(dto);
         }
 
         [HttpDelete]

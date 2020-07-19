@@ -40,5 +40,7 @@
     <Folder Include="Queues\" />
     <Folder Include="Queues\Producers\" />
     <Folder Include="Queues\Consumers\" />
+    <Folder Include="Domain\Schedule\" />
+    <Folder Include="Domain\Schedule\Dtos\" />
   </ItemGroup>
 </Project>

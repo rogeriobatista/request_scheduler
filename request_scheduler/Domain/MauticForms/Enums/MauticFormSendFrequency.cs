@@ -4,6 +4,7 @@ namespace request_scheduler.Domain.MauticForms.Enums
     public enum MauticFormSendFrequency
     {
         Minutely = 1,
-        Each10Minutes = 2
+        Each10Minutes = 2,
+        Each3Minutes = 3
     }
 }

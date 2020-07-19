@@ -31,7 +31,6 @@ namespace request_scheduler
             services.AddScoped(typeof(ISendMauticFormProducer), typeof(SendMauticFormProducer));
             services.AddScoped(typeof(IMauticFormRepository), typeof(MauticFormRepository));
             services.AddScoped(typeof(IMauticFormService), typeof(MauticFormService));
-            services.AddScoped(typeof(ISendMauticFormConsumer), typeof(SendMauticFormConsumer));
 
             services.AddHangfire(config =>
                 config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
@@ -50,8 +49,7 @@ namespace request_scheduler
             IApplicationBuilder app,
             IWebHostEnvironment env,
             IRecurringJobManager recurringJobManager,
-            IMauticFormService mauticFormService,
-            ISendMauticFormConsumer sendMauticFormConsumer)
+            IMauticFormService mauticFormService)
         {
             if (env.IsDevelopment())
             {
@@ -69,13 +67,11 @@ namespace request_scheduler
                 endpoints.MapControllers();
             });
 
-            sendMauticFormConsumer.Register();
-
             app.UseHangfireDashboard();
 
             recurringJobManager.AddOrUpdate(
                 "Send Mautic Form Post Each Minute",
-                () => mauticFormService.Enqueue(MauticFormSendFrequency.Minutely, 10),
+                () => mauticFormService.Enqueue(MauticFormSendFrequency.Minutely, 1),
                 Cron.Minutely()
                 );
 
@@ -83,6 +79,12 @@ namespace request_scheduler
                 "Send Mautic Form Post Each 10 Minutes",
                 () => mauticFormService.Enqueue(MauticFormSendFrequency.Each10Minutes, 20),
                 Cron.MinuteInterval(10)
+            );
+
+            recurringJobManager.AddOrUpdate(
+                "Send Mautic Form Post Each 3 Minutes",
+                () => mauticFormService.Enqueue(MauticFormSendFrequency.Each3Minutes, 20),
+                Cron.MinuteInterval(3)
             );
         }
     }
