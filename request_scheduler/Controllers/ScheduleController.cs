@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Hangfire;
+﻿using Hangfire;
 using Microsoft.AspNetCore.Mvc;
-using request_scheduler.Domain.MauticForms.Enums;
 using request_scheduler.Domain.MauticForms.Interfaces;
 using request_scheduler.Domain.Schedule.Dtos;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace request_scheduler.Controllers
 {
@@ -27,7 +20,7 @@ namespace request_scheduler.Controllers
         [HttpPost]
         public void Post([FromBody] ScheduleDto schedule)
         {
-            _recurringJobManager.AddOrUpdate(schedule.Id, () => _mauticFormService.Enqueue(MauticFormSendFrequency.Minutely, schedule.PackageSize), Cron.MinuteInterval(schedule.Frequency));
+            _recurringJobManager.AddOrUpdate(schedule.Id, () => _mauticFormService.Enqueue(schedule.Id, schedule.PackageSize), schedule.CronExpression);
         }
 
         [HttpGet("{id}/trigger")]

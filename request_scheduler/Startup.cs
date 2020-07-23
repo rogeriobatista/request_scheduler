@@ -68,24 +68,6 @@ namespace request_scheduler
             });
 
             app.UseHangfireDashboard();
-
-            recurringJobManager.AddOrUpdate(
-                "Send Mautic Form Post Each Minute",
-                () => mauticFormService.Enqueue(MauticFormSendFrequency.Minutely, 1),
-                Cron.Minutely()
-                );
-
-            recurringJobManager.AddOrUpdate(
-                "Send Mautic Form Post Each 10 Minutes",
-                () => mauticFormService.Enqueue(MauticFormSendFrequency.Each10Minutes, 20),
-                Cron.MinuteInterval(10)
-            );
-
-            recurringJobManager.AddOrUpdate(
-                "Send Mautic Form Post Each 3 Minutes",
-                () => mauticFormService.Enqueue(MauticFormSendFrequency.Each3Minutes, 20),
-                Cron.MinuteInterval(3)
-            );
         }
     }
 }

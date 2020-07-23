@@ -3,7 +3,7 @@
     public class ScheduleDto
     {
         public string Id { get; set; }
-        public int Frequency { get; set; }
+        public string CronExpression { get; set; }
         public int PackageSize { get; set; }
     }
 }

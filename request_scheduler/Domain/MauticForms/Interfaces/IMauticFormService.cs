@@ -18,7 +18,7 @@ namespace request_scheduler.Domain.MauticForms.Interfaces
 
         void Enqueue(MauticFormRequestDto dto);
 
-        Task Enqueue(MauticFormSendFrequency sendFrequency, int packageSize);
+        Task Enqueue(string cronId, int packageSize);
 
         void Send(MauticForm mauticForm);
     }

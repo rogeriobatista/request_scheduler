@@ -6,7 +6,7 @@ using request_scheduler.Domain.MauticForms.Interfaces;
 namespace request_scheduler.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class MauticFormController : ControllerBase
     {
         private readonly IMauticFormService _mauticFormService;

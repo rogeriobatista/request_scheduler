@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using request_scheduler.Data.Context;
@@ -9,9 +10,10 @@ using request_scheduler.Data.Context;
 namespace request_scheduler.Migrations
 {
     [DbContext(typeof(RequestSchedulerContext))]
-    partial class RequestSchedulerContextModelSnapshot : ModelSnapshot
+    [Migration("20200719205623_CreateScheduleConfig")]
+    partial class CreateScheduleConfig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,6 +50,9 @@ namespace request_scheduler.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(2);
+
+                    b.Property<int>("SendFrequency")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");

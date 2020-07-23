@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using request_scheduler.Data.Context;
@@ -9,9 +10,10 @@ using request_scheduler.Data.Context;
 namespace request_scheduler.Migrations
 {
     [DbContext(typeof(RequestSchedulerContext))]
-    partial class RequestSchedulerContextModelSnapshot : ModelSnapshot
+    [Migration("20200719212717_RemoveSendFrequencyFromMauticForm")]
+    partial class RemoveSendFrequencyFromMauticForm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

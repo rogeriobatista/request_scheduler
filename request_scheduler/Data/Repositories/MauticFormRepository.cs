@@ -29,9 +29,9 @@ namespace request_scheduler.Data.Repositories
             return _context.MauticFormRequests.ToList();
         }
 
-        public IList<MauticForm> GetAllPending(MauticFormSendFrequency sendFrequency, int packageSize)
+        public IList<MauticForm> GetAllPending(string cronId, int packageSize)
         {
-            return _context.MauticFormRequests.Where(x => x.Status == MauticFormStatus.Pending && x.SendFrequency == sendFrequency).Take(packageSize).ToList();
+            return _context.MauticFormRequests.Where(x => x.Status == MauticFormStatus.Pending && x.CronId == cronId).Take(packageSize).ToList();
         }
 
         public MauticForm GetById(long id)

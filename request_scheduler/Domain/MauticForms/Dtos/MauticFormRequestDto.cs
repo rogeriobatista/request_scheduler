@@ -20,6 +20,8 @@ namespace request_scheduler.Domain.MauticForms.Dtos
 
         public MauticFormStatus? Status { get; set; }
 
-        public MauticFormSendFrequency SendFrequency { get; set; }
+        public string CronId { get; set; }
+
+        public int SendFrequency { get; set; }
     }
 }

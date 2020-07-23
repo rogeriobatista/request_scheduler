@@ -46,7 +46,7 @@ namespace request_scheduler.Domain.MauticForms.Services
             if (dto.Id == 0)
             {
                 string headers = JsonConvert.SerializeObject(dto.Headers);
-                var formMautic = new MauticForm(dto.DestinyAddress, dto.HttpMethod, dto.ContentType, headers, dto.Body, dto.SendFrequency);
+                var formMautic = new MauticForm(dto.DestinyAddress, dto.HttpMethod, dto.ContentType, headers, dto.Body, dto.CronId);
                 _mauticFormRepository.Save(formMautic);
             }
             else
@@ -68,7 +68,7 @@ namespace request_scheduler.Domain.MauticForms.Services
             mauticForm.UpdateHeaders(headers);
             mauticForm.UpdateBody(dto.Body);
             mauticForm.UpdateStatus(dto.Status.Value);
-            mauticForm.UpdateSendFrequency(dto.SendFrequency);
+            mauticForm.UpdateCronId(dto.CronId);
             mauticForm.SetUpdatedAt();
 
             return mauticForm;
@@ -79,9 +79,9 @@ namespace request_scheduler.Domain.MauticForms.Services
             _sendMauticFormProducer.PublishToSave(dto);
         }
 
-        public async Task Enqueue(MauticFormSendFrequency sendFrequency, int packageSize)
+        public async Task Enqueue(string cronId, int packageSize)
         {
-            var mauticFormPending = _mauticFormRepository.GetAllPending(sendFrequency, packageSize);
+            var mauticFormPending = _mauticFormRepository.GetAllPending(cronId, packageSize);
 
             foreach (var mauticForm in mauticFormPending)
             {

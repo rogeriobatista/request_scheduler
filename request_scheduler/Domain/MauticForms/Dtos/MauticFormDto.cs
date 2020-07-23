@@ -27,7 +27,7 @@ namespace request_scheduler.Domain.MauticForms.Dtos
 
         public MauticFormStatus Status { get; set; }
 
-        public MauticFormSendFrequency SendFrequency { get; set; }
+        public string CronId { get; set; }
 
         public MauticFormDto(MauticForm model)
         {
@@ -40,7 +40,7 @@ namespace request_scheduler.Domain.MauticForms.Dtos
             Headers = JsonConvert.DeserializeObject<List<MauticFormHeaderDto>>(model.Headers);
             Body = model.Body;
             Status = model.Status;
-            SendFrequency = model.SendFrequency;
+            CronId = CronId;
         }
     }
 }
